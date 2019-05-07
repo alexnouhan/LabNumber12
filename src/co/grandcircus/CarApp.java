@@ -185,13 +185,28 @@ public class CarApp {
 			System.out.println();
 		} else {
 			try {
-
+				int yeary = 0;
 				System.out.println("You can search for make, model, year or type 'used' or new'");
 				String query = Validator.getString(scan, "Enter query: ");
-
+				try {
+					yeary = Integer.parseInt(query);
+				} catch (NumberFormatException e) {
+					
+				}
+				System.out.println();
+				
 				for (Car i : CarLot.lot) {
 
-					if (i.getMake().equalsIgnoreCase(query) | i.getModel().equalsIgnoreCase(query)) {
+					if (i.getMake().equalsIgnoreCase(query)) {
+						if (i instanceof UsedCar) {
+							System.out.printf("%-4s %-10s %-10s %-10s %-10s %-6s %-10s\n", CarLot.lot.indexOf(i) + 1,
+									i.getMake(), i.getModel(), i.getYear(), i.getPrice(), "U",
+									((UsedCar) i).getMilage());
+						} else if (i instanceof Car) {
+							System.out.printf("%-4s %-10s %-10s %-10s %-10s %-6s\n", CarLot.lot.indexOf(i) + 1,
+									i.getMake(), i.getModel(), i.getYear(), i.getPrice(), "N");
+						}
+					} else if (i.getModel().equalsIgnoreCase(query)) {
 						if (i instanceof UsedCar) {
 							System.out.printf("%-4s %-10s %-10s %-10s %-10s %-6s %-10s\n", CarLot.lot.indexOf(i) + 1,
 									i.getMake(), i.getModel(), i.getYear(), i.getPrice(), "U",
@@ -214,7 +229,7 @@ public class CarApp {
 						System.out.printf("%-4s %-10s %-10s %-10s %-10s %-6s\n", CarLot.lot.indexOf(i) + 1, i.getMake(),
 								i.getModel(), i.getYear(), i.getPrice(), "N");
 						}
-					} else if (i.getYear() == Integer.parseInt(query)) {
+					} else if (i.getYear() == yeary) {
 						if (i instanceof UsedCar) {
 							System.out.printf("%-4s %-10s %-10s %-10s %-10s %-6s %-10s\n", CarLot.lot.indexOf(i) + 1,
 									i.getMake(), i.getModel(), i.getYear(), i.getPrice(), "U",
@@ -225,8 +240,6 @@ public class CarApp {
 						}
 					}
 				}
-			} catch (NumberFormatException e) {
-				
 			} catch (Exception e) {
 				System.out.println("error!");
 			}
